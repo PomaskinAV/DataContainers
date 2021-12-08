@@ -22,7 +22,12 @@ public:
 class ForwardList
 {
 	Element* Head; // Указывает на начальный элемент списка
+	int size;
 public:
+	int get_size()const
+	{
+		return this->size;
+	}
 	ForwardList()
 	{
 		this->Head = nullptr;
@@ -43,6 +48,36 @@ public:
 		//3 Переносим Голову на новый элемент
 		Head = New;
 	}
+	void push_back(int Data)
+	{
+		Element* New = new Element(Data);
+		Element* Temp = Head;
+		while (true)
+		{
+			if (Temp->pNext == nullptr)break;
+			else Temp = Temp->pNext;
+		}
+		Temp->pNext = New;
+	}
+	void pop_front()
+	{
+		Element* del = Head;
+		Head = Head->pNext;
+		delete del;
+		size--;
+	}
+	void pop_back()
+	{
+		Element* Temp = Head;
+		while (Temp->pNext->pNext)
+		{
+			Temp = Temp->pNext;
+		}
+		delete Temp->pNext;
+		Temp->pNext = nullptr;
+		size--;
+	}
+
 	// Methods
 	void print()const
 		{
@@ -66,5 +101,15 @@ void main()
 	{
 		list.push_front(rand() % 100);
 	}
+	list.print();
+	list.push_front(rand() % 100);
+	list.print();
+	list.push_back(rand() % 100);
+	list.print();
+	cout << endl;
+	list.pop_front();
+	list.print();
+	cout << endl;
+	list.pop_back();
 	list.print();
 }
