@@ -23,7 +23,7 @@ public:
 		count++;
 		cout << "EConstructor:\t" << this << endl;
 	}
-	Element()
+	~Element()
 	{
 		count--;
 		cout << "EDesstructor:\t" << this << endl;
