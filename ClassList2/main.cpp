@@ -23,18 +23,50 @@ class List
 	}*Head, *Tail;//объ€вл€ем 2 указател€ после описани€ класса
 	//эти указатели переменные члены класса List
 	size_t size;//размер списка
-public:
-	class Iterator
+
+	class BaseIterator
 	{
+	protected:
 		Element* Temp;
 	public:
-		Iterator(Element* Temp) :Temp(Temp)
+		BaseIterator(Element* Temp = nullptr) :Temp(Temp)
 		{
-			cout << "IConstructor:\t" << this << endl;
+			cout << "BItConstructor:\t" << this << endl;
+		}
+		~BaseIterator()
+		{
+			cout << "BItDestructor:\t" << this << endl;
+		}
+
+		bool operator==(const BaseIterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const BaseIterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+		const int& operator*()const
+		{
+			return Temp->Data;
+		}
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
+
+public:
+	class Iterator :public BaseIterator
+	{
+	public:
+		Iterator(Element* Temp = nullptr) :BaseIterator(Temp)
+		{
+			cout << "ItConstructor:\t" << this << endl;
 		}
 		~Iterator()
 		{
-			cout << "IDestructor:\t" << this << endl;
+			cout << "ItDestructor:\t" << this << endl;
 		}
 
 		Iterator& operator++()
@@ -59,7 +91,7 @@ public:
 			Temp = Temp->pPrev;
 			return old;
 		}
-		bool operator==(const Iterator& other)const
+		/*bool operator==(const Iterator& other)const
 		{
 			return this->Temp == other.Temp;
 		}
@@ -78,13 +110,12 @@ public:
 		int& operator*()
 		{
 			return Temp->Data;
-		}
+		}*/
 	};
-	class ReversIterator
+	class ReversIterator :public BaseIterator
 	{
-		Element* Temp;
 	public:
-		ReversIterator(Element* Temp) :Temp(Temp)
+		ReversIterator(Element* Temp = nullptr) :BaseIterator(Temp)
 		{
 			cout << "RItConstructor:\t" << this << endl;
 		}
@@ -116,7 +147,7 @@ public:
 			return old;
 		}
 
-		bool operator==(const ReversIterator& other)const
+		/*bool operator==(const ReversIterator& other)const
 		{
 			return this->Temp == other.Temp;
 		}
@@ -135,7 +166,7 @@ public:
 		int& operator*()
 		{
 			return Temp->Data;
-		}
+		}*/
 	};
 
 	Iterator begin()
