@@ -1,5 +1,6 @@
 #include"ClassList2.h"
 #include"ClassList2.cpp"
+#include<string>
 
 //#define BASE_CHECK
 
@@ -42,4 +43,10 @@ void main()
 
 	reverse_print_list(list1);
 	print_list(list1);
+
+	List<double> d_list = { 2.7, 3.14, 5.2, 8.3 };
+	for (double i : d_list)cout << i << tab; cout << endl;
+
+	List<std::string> s_list = { "Happy", "New", "Year" };
+	for (std::string i : s_list)cout << i << tab; cout << endl;
 }
