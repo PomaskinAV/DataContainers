@@ -1,4 +1,5 @@
 #include"ClassList2.h"
+#include"ClassList2.cpp"
 
 //#define BASE_CHECK
 
