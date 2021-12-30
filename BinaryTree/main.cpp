@@ -1,4 +1,4 @@
-#include<iostream>
+Ôªø#include<iostream>
 //using namespace std;
 using std::cin;
 using std::cout;
@@ -23,7 +23,7 @@ class Tree
 			cout << "EDestructor:\t" << this << endl;
 		}
 		friend class Tree;
-	} *Root; // ÓÂÌ¸ ‰ÂÂ‚‡
+	} *Root; //–ö–æ—Ä–µ–Ω—å –¥–µ—Ä–µ–≤–∞
 public:
 	Element* getRoot()const
 	{
@@ -76,16 +76,16 @@ public:
 private:
 	void insert(int Data, Element* Root)
 	{
-		//Root - ÍÓÂÌ¸ ÔÓ‰ ‰ÂÂ‚‡
-		//this->Root ÍÓÂÌ¸ ‚ÒÂ„Ó ‰ÂÂ‚‡
+		//Root - –∫–æ—Ä–µ–Ω—å –ø–æ–¥ –¥–µ—Ä–µ–≤–∞
+		//this->Root –∫–æ—Ä–µ–Ω—å –≤—Å–µ–≥–æ –¥–µ—Ä–µ–≤–∞
 		if (this->Root == nullptr)this->Root = new Element(Data);
 		if (Root == nullptr)return;
 		if (Data < Root->Data)
 		{
-			if (Root->pLeft == nullptr)//≈ÒÎË ÂÒÚ¸ ÏÂÒÚÓ ‰Îˇ ‰Ó·‡‚ÎÂÌËˇ ˝ÎÂÏÂÌÚ‡,
-				Root->pLeft = new Element(Data);//‰Ó·‡‚ÎˇÂÏ ˝ÎÂÏÂÌÚ ÔˇÏÓ Ò˛‰‡.
-			else// ‚ ÔÓÚË‚ÌÓÏ ÒÎÛ˜‡Â
-				insert(Data, Root->pLeft);//Ë‰ÂÏ Ì‡ ÎÂ‚ÓÏ Ë Ë˘ÂÏ ÏÂÒÚÓ ÍÛ‰‡ ‰Ó·‡‚ËÚ¸ ˝ÎÂÏÂÌÚ.
+			if (Root->pLeft == nullptr)//–ï—Å–ª–∏ –µ—Å—Ç—å –º–µ—Å—Ç–æ –¥–ª—è –¥–æ–±–∞–≤–ª–µ–Ω–∏—è —ç–ª–µ–º–µ–Ω—Ç–∞,
+				Root->pLeft = new Element(Data);//–¥–æ–±–∞–≤–ª—è–µ–º —ç–ª–µ–º–µ–Ω—Ç –ø—Ä—è–º–æ —Å—é–¥–∞.
+			else// –≤ –ø—Ä–æ—Ç–∏–≤–Ω–æ–º —Å–ª—É—á–∞–µ
+				insert(Data, Root->pLeft);//–∏–¥–µ–º –Ω–∞ –ª–µ–≤–æ–º –∏ –∏—â–µ–º –º–µ—Å—Ç–æ –∫—É–¥–∞ –¥–æ–±–∞–≤–∏—Ç—å —ç–ª–µ–º–µ–Ω—Ç.
 		}
 		else
 		{
@@ -144,7 +144,7 @@ void main()
 {
 	setlocale(LC_ALL, "");
 	int n;
-	cout << "¬‚Â‰ËÚÂ ÍÓÎË˜ÂÒÚ‚Ó ˝ÎÂÏÂÌÚÓ‚: "; cin >> n;
+	cout << "–í–≤–µ–¥–∏—Ç–µ –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ —ç–ª–µ–º–µ–Ω—Ç–æ–≤: "; cin >> n;
 	Tree tree;
 	for (int i = 0; i < n; i++)
 	{
@@ -152,11 +152,11 @@ void main()
 	}
 	tree.print();
 	cout << endl;
-	cout << "ÃËÌËÏ‡Î¸ÌÓÂ ÁÌ‡˜ÂÌËÂ ‚ ‰ÂÂ‚Â: " << tree.minValue() << endl;
-	cout << "Ã‡ÍÒËÏ‡Î¸ÌÓÂ ÁÌ‡˜ÂÌËÂ ‚ ‰ÂÂ‚Â: " << tree.maxValue() << endl;
-	cout << " ÓÎË˜ÂÒÚ‚Ó ˝ÎÂÏÂÌÚÓ‚ ‚ ‰ÂÂ‚Â:  " << tree.count() << endl;
-	cout << "—ÛÏÏ‡ ˝ÎÂÏÂÌÚÓ‚ ‚ ‰ÂÂ‚Â: " << tree.sum() << endl;
-	cout << "—Â‰ÌÂÂ ‡ËÙÏÂÚË˜ÂÒÍÓÂ ˝ÎÂÏÂÌÚÓ‚ ‚ ‰ÂÂ‚Â:" << tree.avg() << endl;
+	cout << "–ú–∏–Ω–∏–º–∞–ª—å–Ω–æ–µ –∑–Ω–∞—á–µ–Ω–∏–µ –≤ –¥–µ—Ä–µ–≤–µ: " << tree.minValue() << endl;
+	cout << "–ú–∞–∫—Å–∏–º–∞–ª—å–Ω–æ–µ –∑–Ω–∞—á–µ–Ω–∏–µ –≤ –¥–µ—Ä–µ–≤–µ: " << tree.maxValue() << endl;
+	cout << "–ö–æ–ª–∏—á–µ—Å—Ç–≤–æ —ç–ª–µ–º–µ–Ω—Ç–æ–≤ –≤ –¥–µ—Ä–µ–≤–µ:  " << tree.count() << endl;
+	cout << "–°—É–º–º–∞ —ç–ª–µ–º–µ–Ω—Ç–æ–≤ –≤ –¥–µ—Ä–µ–≤–µ: " << tree.sum() << endl;
+	cout << "–°—Ä–µ–¥–Ω–µ–µ –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–µ —ç–ª–µ–º–µ–Ω—Ç–æ–≤ –≤ –¥–µ—Ä–µ–≤–µ:" << tree.avg() << endl;
 	tree.clear();
 	tree.print();
 }
