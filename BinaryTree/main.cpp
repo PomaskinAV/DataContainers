@@ -4,7 +4,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-#define tab "\t"
+#define tab "   "
 
 class Tree
 {
@@ -22,6 +22,10 @@ class Tree
 		{
 			cout << "EDestructor:\t" << this << endl;
 		}
+		bool is_leaf()const
+		{
+			return pLeft == pRight;
+		}
 		friend class Tree;
 	} *Root; //Корень дерева
 public:
@@ -34,19 +38,54 @@ public:
 		Root = nullptr;
 		cout << "TConstructor:\t" << this << endl;
 	}
+	Tree(const std::initializer_list<int>& il) :Tree()
+	{
+		for (int i : il)insert(i, Root);
+	}
+	Tree(const Tree& other) :Tree()
+	{
+		copy(other.Root);
+		cout << "CopyConstructor:" << this << endl;
+	}
 	~Tree()
 	{
+		clear(Root);
+		Root = nullptr;
 		cout << "TDestructor:\t" << this << endl;
+	}
+	Tree& operator=(const Tree& other)
+	{
+		if (this == &other)return *this;
+		clear();
+		copy(other.Root);
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
 	}
 	void insert(int Data)
 	{
 		insert(Data, this->Root);
 	}
-
+	void erase(int Data)
+	{
+		erase(Data, Root);
+	}
+	int depth()const
+	{
+		return depth(this->Root);
+	}
 	void print()const
 	{
 		print(this->Root);
 		cout << endl;
+	}
+	void print(int depth)const
+	{
+		print(this->Root, depth);
+		cout << endl;
+	}
+	void tree_print()
+	{
+		tree_print(0);
 	}
 
 	int minValue()const
@@ -59,21 +98,29 @@ public:
 	}
 	int count()const
 	{
-		return count(this->Root);
+		return count(Root);
 	}
 	int sum()const
 	{
-		return sum(this->Root);
+		return sum(Root);
 	}
 	double avg()const
 	{
-		return avg(this->Root);
+		return avg(Root);
 	}
 	void clear()
 	{
-		clear(this->Root);
+		clear(Root);
+		Root = nullptr;
 	}
 private:
+	void copy(Element* Root)
+	{
+		if (Root == nullptr)return;
+		insert(Root->Data);
+		copy(Root->pLeft);
+		copy(Root->pRight);
+	}
 	void insert(int Data, Element* Root)
 	{
 		//Root - корень под дерева
@@ -87,13 +134,40 @@ private:
 			else// в противном случае
 				insert(Data, Root->pLeft);//идем на левом и ищем место куда добавить элемент.
 		}
-		else
+		else //if(Data>Root->Data) - уникальное дерево
 		{
 			if (Root->pRight == nullptr)Root->pRight = new Element(Data);
 			else insert(Data, Root->pRight);
 		}
 	}
-
+	void erase(int Data, Element*& Root)
+	{
+		if (Root == nullptr)return;
+		erase(Data, Root->pLeft);
+		erase(Data, Root->pRight);
+		if (Data == Root->Data)
+		{
+			if (Root->is_leaf()) //Если элемент является листком
+			{
+				//то его можно удалять
+				delete Root;
+				Root = nullptr;
+			}
+			else
+			{
+				if (count(Root->pLeft) > count(Root->pRight))//Если в левой ветке больше элементов чем в правой ветке
+				{
+					Root->Data = maxValue(Root->pLeft); // То заменяем значение удаляемого элемента максимальным значением в левой ветке
+					erase(maxValue(Root->pLeft), Root->pLeft);
+				}
+				else//В противном случае
+				{
+					Root->Data = minValue(Root->pRight);//заменяем значение удаляемого элемента минимальным значением в правой ветке
+					erase(minValue(Root->pRight), Root->pRight);
+				}
+			}
+		}
+	}
 	int minValue(Element* Root)const
 	{
 		/*if (Root->pLeft == nullptr)return Root->Data;
@@ -110,9 +184,9 @@ private:
 	}
 	int count(Element* Root)const
 	{
-		if (Root == nullptr)return 0;
-		else return count(Root->pLeft) + count(Root->pRight) + 1;
-		//return Root == nullptr ? 0 : size(Root->pLeft) + size(Root->pRight) + 1;
+		/*if (Root == nullptr)return 0;
+		else return count(Root->pLeft) + count(Root->pRight) + 1;*/
+		return Root == nullptr ? 0 : count(Root->pLeft) + count(Root->pRight) + 1;
 	}
 	int sum(Element* Root)const
 	{
@@ -122,14 +196,19 @@ private:
 	{
 		return (double)sum(Root) / count(Root);
 	}
-	
-	void clear(Element*& Root)
+	void clear(Element* Root)
 	{
 		if (Root == nullptr)return;
 		clear(Root->pLeft);
 		clear(Root->pRight);
 		delete Root;
-		Root = nullptr;
+	}
+	int depth(Element* Root)const
+	{
+		if (Root == nullptr)return 0;
+		else return
+			depth(Root->pLeft) + 1 > depth(Root->pRight) + 1 ?
+			depth(Root->pLeft) + 1 : depth(Root->pRight) + 1;
 	}
 	void print(Element* Root)const
 	{
@@ -138,11 +217,33 @@ private:
 		cout << Root->Data << tab;
 		print(Root->pRight);
 	}
+	void print(Element* Root, int depth)const
+	{
+		if (Root == nullptr || depth == -1)return;
+		if (depth == 1 && Root->pLeft == nullptr)cout << " " << tab;
+		print(Root->pLeft, depth - 1);
+		if (depth == 0)cout << Root->Data /*<< tab*/;
+		if (depth == 1 && Root->pRight == nullptr)cout << " " << tab;
+		print(Root->pRight, depth - 1);
+		cout << tab;
+	}
+	void tree_print(int depth)
+	{
+		if (depth == this->depth())return;
+		for (int i = 0; i < (this->depth() - depth)*2; i++)cout << tab;
+		print(depth);
+		for (int i = 0; i < (this->depth() - depth)*2; i++)cout << tab;
+		cout << endl;
+		tree_print(depth + 1);
+	}
 };
+
+//#define BASE_CHECK
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
 	int n;
 	cout << "Введите количество элементов: "; cin >> n;
 	Tree tree;
@@ -159,4 +260,15 @@ void main()
 	cout << "Среднее арифметическое элементов в дереве:" << tree.avg() << endl;
 	tree.clear();
 	tree.print();
+#endif // BASE_CHECK
+	
+	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 18, 48, 77, 85 };
+	tree.print();
+	int value;
+	/*cout << "Введите удаляемое значение: "; cin >> value;
+	tree.erase(value);
+	tree.print();*/
+	cout << "Глубина дерева: " << tree.depth() << endl;
+	//tree.print(3);
+	tree.tree_print();
 }
